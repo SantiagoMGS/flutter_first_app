@@ -35,16 +35,33 @@ class _SegundaPaginaState extends State<SegundaPagina> {
                 Navigator.pop(context);
               })),
       //onPressed: () => Navigator.of(context).pop(context))), otra forma de hacerlo
-      body: Column(
-        children: [
-          //Text(widget.usuario?.nombre ?? 'Sin nombre', style: const TextStyle(fontSize: 20)),
-          Text(argumentos.usuario?.nombre ?? 'Sin nombre',
-              style: const TextStyle(fontSize: 20)),
-          //Text(widget.usuario?.edad.toString() ?? 'Sin edad', style: const TextStyle(fontSize: 20)),
-          Text(argumentos.usuario?.edad.toString() ?? 'Sin edad',
-              style: const TextStyle(fontSize: 20)),
-        ],
-      ),
+      body: SizedBox(
+          width: double.infinity,
+          child: Column(
+            children: [
+              Container(
+                height: 300,
+                width: 300,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/cachorros.jpg'),
+                )),
+              ),
+              //Text(widget.usuario?.nombre ?? 'Sin nombre', style: const TextStyle(fontSize: 20)),
+              Text(argumentos.usuario?.nombre ?? 'Sin nombre',
+                  style: const TextStyle(fontSize: 20)),
+              //Text(widget.usuario?.edad.toString() ?? 'Sin edad', style: const TextStyle(fontSize: 20)),
+              Text(argumentos.usuario?.edad.toString() ?? 'Sin edad',
+                  style: const TextStyle(fontSize: 20)),
+              SizedBox(
+                  height: 300,
+                  width: 300,
+                  child: Image.network(
+                      'https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQOO0X7mMnoYz-e9Zdc6Pe6Wz7Ow1DcvhEiaex5aSv6QJDoCtcooqA7UUbjrphvjlIc'))
+              //Image.asset('assets/gatito-cesped_0.jpg')),
+            ],
+          )),
     );
   }
 }

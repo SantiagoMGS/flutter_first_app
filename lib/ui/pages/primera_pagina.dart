@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_first_app/core/controllers/persona_controller.dart';
 import 'package:flutter_first_app/core/models/persona.dart';
 import 'package:flutter_first_app/ui/pages/segunda_pagina.dart';
+import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class FormularioPagina extends StatefulWidget {
   const FormularioPagina({super.key});
@@ -24,16 +29,32 @@ class FormularioPaginaState extends State<FormularioPagina> {
   late bool seleccionado;
   late String carrera;
   late String? pais;
+  late String respuesta;
 
   final Persona persona = Persona(nombre: 'Santiago Martinez', edad: 27);
 
+  final hiveStore = Hive.box('hiveStore');
+  late final SharedPreferences preferencesStore;
+
+  void initSharedPreferences() async {
+    preferencesStore = await SharedPreferences.getInstance();
+    var carreraPrefs = preferencesStore.getString('carrera') ?? '';
+    setState(() {
+      carrera = carreraPrefs;
+    });
+  }
+
   @override
   initState() {
-    _controller = TextEditingController(text: '');
-    _controller2 = TextEditingController(text: '');
+    initSharedPreferences();
+    _controller =
+        TextEditingController(text: hiveStore.get('nombre', defaultValue: ''));
+    _controller2 =
+        TextEditingController(text: hiveStore.get('edad', defaultValue: ''));
     seleccionado = false;
     carrera = '';
     pais = null;
+    respuesta = '';
     super.initState();
   }
 
@@ -140,11 +161,13 @@ class FormularioPaginaState extends State<FormularioPagina> {
                           ));
                           return;
                         }
-                        ;
-                        print("Formulario validado");
+                        hiveStore.put('nombre', _controller.value.text);
+                        hiveStore.put('edad', _controller2.value.text);
+                        //hiveStore.put('carrera', carrera);
+                        preferencesStore.setString('carrera', carrera);
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
-                          content: Text("Formulario validado"),
+                          content: Text("Datos almacenados correctamente"),
                           backgroundColor: Colors.green,
                         ));
                       } else {
@@ -179,16 +202,32 @@ class FormularioPaginaState extends State<FormularioPagina> {
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(4)),
                         child: const Text("Cuarto")),
-                    onTap: () {
-                      print("Presionado simple");
+                    onTap: () async {
+                      var url = Uri.parse(
+                          'https://jsonplaceholder.typicode.com/todos/1');
+                      var response = await http.get(url);
+                      var json = jsonDecode(response.body);
+                      setState(() {
+                        respuesta = json['title'];
+                      });
+                      print(response.body);
                     },
                     onDoubleTap: () {
                       print("Presionado doble");
                     },
                     onLongPress: () {
                       print("Presionado largo");
-                    })
-              ])
+                    }),
+              ]),
+              Text(respuesta),
             ])));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _controller2.dispose();
+    hiveStore.close();
+    super.dispose();
   }
 }

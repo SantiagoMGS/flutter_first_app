@@ -1,0 +1,1 @@
+// Aqui se guardan widgets que se van a usar de forma transversal en la aplicacion

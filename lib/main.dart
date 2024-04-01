@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_first_app/ui/pages/primera_pagina.dart';
 import 'package:flutter_first_app/ui/pages/segunda_pagina.dart';
+import 'package:hive_flutter/adapters.dart';
 
 const Color darkBlue = Color.fromARGB(255, 18, 32, 47);
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox('hiveStore');
   runApp(const MyApp());
 }
 

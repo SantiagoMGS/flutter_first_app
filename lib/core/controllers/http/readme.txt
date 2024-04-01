@@ -1,0 +1,1 @@
+Aqui podrían ir los recursos que se consumen como API's, o cualquier otro recurso que se consuma en la aplicación.
