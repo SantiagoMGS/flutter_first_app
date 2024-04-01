@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/core/controllers/persona_controller.dart';
 import 'package:flutter_first_app/core/models/persona.dart';
 import 'package:flutter_first_app/ui/pages/segunda_pagina.dart';
 
@@ -24,7 +25,7 @@ class FormularioPaginaState extends State<FormularioPagina> {
   late String carrera;
   late String? pais;
 
-  final Persona persona = Persona(nombre: 'Santiago', edad: 27);
+  final Persona persona = Persona(nombre: 'Santiago Martinez', edad: 27);
 
   @override
   initState() {
@@ -161,10 +162,11 @@ class FormularioPaginaState extends State<FormularioPagina> {
                       //               usuario: persona,
                       //               esNuevo: true,
                       //             ))); // Navegacion con parametros usando MaterialPageRoute
+                      final controlador = PersonaController(persona);
+                      controlador.cambiarNombre('Poderosisimo jesus');
                       Navigator.pushNamed(context, 'segunda_pagina',
                           arguments: SegundaPaginaArgumentos(
-                              usuario: Persona(nombre: 'Jesucristo', edad: 33),
-                              esNuevo: true));
+                              usuario: persona, esNuevo: true));
                     }),
                 const SizedBox(width: 8),
                 ElevatedButton(child: const Text("Tercero"), onPressed: () {}),
