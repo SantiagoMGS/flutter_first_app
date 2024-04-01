@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/ui/pages/segunda_pagina.dart';
 
 class FormularioPagina extends StatefulWidget {
   const FormularioPagina({super.key});
@@ -34,7 +36,7 @@ class FormularioPaginaState extends State<FormularioPagina> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(50),
+        padding: const EdgeInsets.all(10),
         child: Form(
             key: _formKey,
             child: ListView(children: [
@@ -59,7 +61,9 @@ class FormularioPaginaState extends State<FormularioPagina> {
                       hintText: 'Ej. 25',
                       label: Text('Edad')),
                   onChanged: (valor) {
-                    print("Esta es mi edad: $valor");
+                    if (kDebugMode) {
+                      print("Esta es mi edad: $valor");
+                    }
                   },
                   validator: (valor) {
                     if (valor == null || valor.isEmpty) {
@@ -123,6 +127,16 @@ class FormularioPaginaState extends State<FormularioPagina> {
                     child: const Text("Validar"),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        if (carrera.isEmpty || pais == null) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content:
+                                Text("Por favor selecciona carrera y pais"),
+                            backgroundColor: Colors.red,
+                          ));
+                          return;
+                        }
+                        ;
                         print("Formulario validado");
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
@@ -134,9 +148,17 @@ class FormularioPaginaState extends State<FormularioPagina> {
                       }
                     }),
                 const SizedBox(width: 8),
-                OutlinedButton(child: const Text("Segundo"), onPressed: () {}),
-                // const SizedBox(width: 8),
-                // ElevatedButton(child: const Text("Tercero"), onPressed: () {}),
+                OutlinedButton(
+                    child: const Text("Segundo"),
+                    onPressed: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const SegundaPagina()));
+                      Navigator.pushNamed(context, 'segunda_pagina');
+                    }),
+                const SizedBox(width: 8),
+                ElevatedButton(child: const Text("Tercero"), onPressed: () {}),
                 const SizedBox(width: 8),
                 GestureDetector(
                     child: Container(
