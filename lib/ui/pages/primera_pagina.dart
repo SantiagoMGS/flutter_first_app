@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/core/models/persona.dart';
 import 'package:flutter_first_app/ui/pages/segunda_pagina.dart';
 
 class FormularioPagina extends StatefulWidget {
@@ -22,6 +23,8 @@ class FormularioPaginaState extends State<FormularioPagina> {
   late bool seleccionado;
   late String carrera;
   late String? pais;
+
+  final Persona persona = Persona(nombre: 'Santiago', edad: 27);
 
   @override
   initState() {
@@ -154,8 +157,14 @@ class FormularioPaginaState extends State<FormularioPagina> {
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(
-                      //         builder: (context) => const SegundaPagina()));
-                      Navigator.pushNamed(context, 'segunda_pagina');
+                      //         builder: (context) => SegundaPagina(
+                      //               usuario: persona,
+                      //               esNuevo: true,
+                      //             ))); // Navegacion con parametros usando MaterialPageRoute
+                      Navigator.pushNamed(context, 'segunda_pagina',
+                          arguments: SegundaPaginaArgumentos(
+                              usuario: Persona(nombre: 'Jesucristo', edad: 33),
+                              esNuevo: true));
                     }),
                 const SizedBox(width: 8),
                 ElevatedButton(child: const Text("Tercero"), onPressed: () {}),
